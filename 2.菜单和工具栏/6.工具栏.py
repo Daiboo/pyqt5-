@@ -13,6 +13,8 @@ class Example(QMainWindow):
         exitAct = QAction("Exit",self)
         exitAct.setShortcut("Ctrl+Q")
         exitAct.triggered.connect(qApp.quit)
+        # 这里使用了一个行为对象，这个对象绑定了一个标签，一个图标和一个快捷键。
+        # 
 
         self.toolbar = self.addToolBar("Exit")
         self.toolbar.addAction(exitAct)

@@ -1,6 +1,11 @@
 from PyQt5.QtWidgets import QWidget,QVBoxLayout,QPushButton,QSizePolicy,QLabel,QFontDialog,QApplication
 import sys
 
+"""
+QFontDialog能做字体的选择。
+我们创建了一个有一个按钮和一个标签的QFontDialog的对话框，我们可以使用这个功能修改字体样式。
+"""
+
 class Example(QWidget):
     def __init__(self):
         super().__init__()
@@ -28,9 +33,11 @@ class Example(QWidget):
         self.show()
 
     def showDialog(self):
-        font,ok = QFontDialog.getFont()
+        font,ok = QFontDialog.getFont() 
+        # 弹出一个字体选择对话框。getFont()方法返回一个字体名称和状态信息。
+        # 状态信息有OK和其他两种
         if ok:
-            self.lbl.setFont(font)
+            self.lbl.setFont(font)  # 如果点击OK，标签的字体就会随之更改。
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)

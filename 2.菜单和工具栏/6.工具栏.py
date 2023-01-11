@@ -14,11 +14,12 @@ class Example(QMainWindow):
         exitAct.setShortcut("Ctrl+Q")
         exitAct.triggered.connect(qApp.quit)
         # 这里使用了一个行为对象，这个对象绑定了一个标签，一个图标和一个快捷键。
-        # 
+        # 这些行为被触发的时候，会调用QtGui.QMainWindow的quit方法退出应用。
 
         self.toolbar = self.addToolBar("Exit")
         self.toolbar.addAction(exitAct)
-
+        # 用addToolBar()创建工具栏，并用addAction()将动作对象添加到工具栏。
+        
         self.setGeometry(300, 300, 300, 200)
         self.setWindowTitle('Toolbar')    
         self.show()

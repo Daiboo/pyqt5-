@@ -1,6 +1,9 @@
 import sys
 from PyQt5.QtWidgets import QWidget,QLabel,QLineEdit,QTextEdit,QGridLayout,QApplication
-
+"""
+组件能跨列和跨行展示，这个例子里，我们就试试这个功能。
+我们创建了一个有三个标签的窗口。两个行编辑和一个文版编辑，这是用QGridLayout模块搞定的。
+"""
 class Example(QWidget):
     def __init__(self):
         super().__init__()
@@ -17,7 +20,7 @@ class Example(QWidget):
         reviewEdit = QTextEdit()
 
         grid = QGridLayout()
-        grid.setSpacing(10)
+        grid.setSpacing(10)  # 创建标签之间的空间。
 
         grid.addWidget(title,1,0)
         grid.addWidget(titleEdit,1,1)

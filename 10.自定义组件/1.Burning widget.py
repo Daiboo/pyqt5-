@@ -2,16 +2,26 @@ from PyQt5.QtWidgets import QWidget,QSlider,QApplication,QHBoxLayout,QVBoxLayout
 from PyQt5.QtCore import QObject,Qt,pyqtSignal
 from PyQt5.QtGui import QPainter,QFont,QColor,QPen
 import sys
+"""
+PyQt5有丰富的组件，但是肯定满足不了所有开发者的所有需求，PyQt5只提供了基本的组件，像按钮，文本，滑块等。
+如果你还需要其他的模块，应该尝试自己去自定义一些。
 
+自定义组件使用绘画工具创建，有两个基本方式：根据已有的创建或改进；通过自己绘图创建。
+"""
+"""
+本例中，我们使用了QSlider和一个自定义组件，由进度条控制。
+显示的有物体（也就是CD/DVD）的总容量和剩余容量。进度条的范围是1~750。
+如果值达到了700（OVER_CAPACITY），就显示为红色，代表了烧毁了的意思。
+"""
 class Communicate(QObject):
     updateBW = pyqtSignal(int)
 
-class BurningWidget(QWidget):
+class BurningWidget(QWidget):  # 基于QWidget组件。
     def __init__(self):
         super().__init__()
         self.initUI()
     def initUI(self):
-        self.setMinimumSize(1,30)
+        self.setMinimumSize(1,30)  # 修改组件进度条的高度，默认的有点小。
         self.value = 75
         self.num = [75,150,225,330,375,450,525,600,675]
 
@@ -28,17 +38,19 @@ class BurningWidget(QWidget):
         MAX_CAPACITY = 700
         OVER_CAPACITY = 750
 
-        font = QFont("Serif",7,QFont.Light)
+        font = QFont("Serif",7,QFont.Light)  # 使用比默认更小一点的字体，这样更配。
         qp.setFont(font)
 
         size = self.size()
         w = size.width()
         h = size.height()
+        # 动态的渲染组件，随着窗口的大小而变化，这就是我们计算窗口大小的原因。
 
         step = int(round(w/10))
 
         till = int((w / OVER_CAPACITY) * self.value)
-        full = int((w / OVER_CAPACITY) * MAX_CAPACITY)
+        full = int((w / OVER_CAPACITY) * MAX_CAPACITY) # 最后一个参数决定了组件的最大范围，
+        # 进度条的值是由窗口大小按比例计算出来的。最大值的地方填充的是红色。
 
         if self.value >= MAX_CAPACITY:
             qp.setPen(QColor(255,255,255))
@@ -51,6 +63,7 @@ class BurningWidget(QWidget):
             qp.setPen(QColor(255,255,255))
             qp.setBrush(QColor(255,255,184))
             qp.drawRect(0,0,till,h)
+            # 绘画由三部分组成，黄色或红色区域和黄色矩形，然后是分割线，最后是添上代表容量的数字
         
         pen = QPen(QColor(20,20,20),1,Qt.SolidLine)
 
@@ -66,7 +79,7 @@ class BurningWidget(QWidget):
             fw = metrics.width(str(self.num[j]))
             qp.drawText(i-fw/2,h/2,str(self.num[j]))
             j = j + 1
-
+        # 这里使用字体去渲染文本。必须要知道文本的宽度，这样才能让文本的中间点正好落在竖线上。
 class Example(QWidget):
     def __init__(self):
         super().__init__()
@@ -84,7 +97,7 @@ class Example(QWidget):
         self.wid = BurningWidget()
         self.c.updateBW[int].connect(self.wid.setValue)
 
-        sld.valueChanged[int].connect(self.changeValue)
+        sld.valueChanged[int].connect(self.changeValue) # 拖动滑块的时候，调用了changeValue()方法。
         hbox = QHBoxLayout()
         hbox.addWidget(self.wid)
         vbox = QVBoxLayout()
@@ -96,8 +109,8 @@ class Example(QWidget):
         self.setWindowTitle('Burning widget')
         self.show()
 
-    def changeValue(self,value):
-        self.c.updateBW.emit(value)
+    def changeValue(self,value):  # 拖动滑块的时候，调用了changeValue()方法。
+        self.c.updateBW.emit(value)  # 这个方法内部，我们自定义了一个可以传参的updateBW信号。
         self.wid.repaint()
 
 if __name__ == '__main__':

@@ -2,7 +2,11 @@ from PyQt5.QtWidgets import QWidget,QApplication
 from PyQt5.QtGui import QPainter,QBrush
 from PyQt5.QtCore import Qt
 import sys
+"""
+QBrush也是图像的一个基本元素。是用来填充一些物体的背景图用的，比如矩形，椭圆，多边形等。
+有三种类型：预定义、渐变和纹理。
 
+"""
 class Example(QWidget):
     def __init__(self):
         super().__init__()
@@ -24,6 +28,7 @@ class Example(QWidget):
         brush = QBrush(Qt.SolidPattern)
         qp.setBrush(brush)
         qp.drawRect(10,15,90,60)
+        # 创建了一个笔刷对象，添加笔刷样式，然后调用drawRect()方法画图。
         
         brush.setStyle(Qt.Dense1Pattern)
         qp.setBrush(brush)
